@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.4.33403.182
+VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetPalz", "PetPalz\PetPalz.csproj", "{E5F1EEBB-0A71-4A36-8681-F322C3E78C04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetPalz", "PetPalz\PetPalz.csproj", "{D0089BCE-1E09-418F-B067-85A62A96C43F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E5F1EEBB-0A71-4A36-8681-F322C3E78C04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E5F1EEBB-0A71-4A36-8681-F322C3E78C04}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E5F1EEBB-0A71-4A36-8681-F322C3E78C04}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E5F1EEBB-0A71-4A36-8681-F322C3E78C04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0089BCE-1E09-418F-B067-85A62A96C43F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0089BCE-1E09-418F-B067-85A62A96C43F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0089BCE-1E09-418F-B067-85A62A96C43F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0089BCE-1E09-418F-B067-85A62A96C43F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {E3DE9EB7-EF00-4EA1-AB29-CCCEA63D6FE2}
+		SolutionGuid = {817BB6E7-6424-4F66-B894-AD9B71676EA0}
 	EndGlobalSection
 EndGlobal
