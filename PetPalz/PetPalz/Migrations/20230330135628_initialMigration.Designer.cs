@@ -11,7 +11,7 @@ using PetPalz.Data;
 
 namespace PetPalz.Migrations
 {
-    [DbContext(typeof(PetPalzContext))]
+    //[DbContext(typeof(PetPalzContext))]
     [Migration("20230330135628_initialMigration")]
     partial class initialMigration
     {

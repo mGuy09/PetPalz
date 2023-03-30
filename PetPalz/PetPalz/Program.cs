@@ -9,6 +9,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
+var services = builder.Services;
 // Add services to the container.
 
 builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles);
@@ -16,7 +17,7 @@ builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.Re
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Recipo Api", Version = "v1" });
+    c.SwaggerDoc("1.0.0", new OpenApiInfo { Title = "PetPalz Api", Version = "1.0.0" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "Jwt auth header",
@@ -49,14 +50,14 @@ builder.Services.AddDbContext<PetPalzContext>(options =>
     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
-    {
-        options.Password.RequireDigit = true;
-        options.Password.RequireLowercase = true;
-        options.Password.RequireUppercase = true;
-        options.Password.RequiredLength = 6;
-    }).AddRoles<IdentityRole>().AddEntityFrameworkStores<PetPalzContext>()
-    .AddDefaultTokenProviders();
+//builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+//    {
+//        options.Password.RequireDigit = true;
+//        options.Password.RequireLowercase = true;
+//        options.Password.RequireUppercase = true;
+//        options.Password.RequiredLength = 6;
+//    }).AddRoles<IdentityRole>().AddEntityFrameworkStores<PetPalzContext>()
+//    .AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication(auth =>
 {
