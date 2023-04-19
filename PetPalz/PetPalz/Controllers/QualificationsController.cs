@@ -13,57 +13,57 @@ namespace PetPalz.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ChatsController : ControllerBase
+    public class QualificationsController : ControllerBase
     {
         private readonly PetPalzContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public ChatsController(PetPalzContext context, UserManager<IdentityUser> userManager)
+        public QualificationsController(PetPalzContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-        // GET: api/Chats
+        // GET: api/Qualifications
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Chat>>> GetChats()
+        public async Task<ActionResult<IEnumerable<Qualification>>> GetQualifications()
         {
-          if (_context.Chats == null)
+          if (_context.Qualifications == null)
           {
               return NotFound();
           }
-            return await _context.Chats.ToListAsync();
+            return await _context.Qualifications.ToListAsync();
         }
 
-        // GET: api/Chats/5
+        // GET: api/Qualifications/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Chat>> GetChat(int id)
+        public async Task<ActionResult<Qualification>> GetQualification(int id)
         {
-          if (_context.Chats == null)
+          if (_context.Qualifications == null)
           {
               return NotFound();
           }
-            var chat = await _context.Chats.FindAsync(id);
+            var qualification = await _context.Qualifications.FindAsync(id);
 
-            if (chat == null)
+            if (qualification == null)
             {
                 return NotFound();
             }
 
-            return chat;
+            return qualification;
         }
 
-        // PUT: api/Chats/5
+        // PUT: api/Qualifications/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutChat(int id, Chat chat)
+        public async Task<IActionResult> PutQualification(int id, Qualification qualification)
         {
-            if (id != chat.Id)
+            if (id != qualification.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(chat).State = EntityState.Modified;
+            _context.Entry(qualification).State = EntityState.Modified;
 
             try
             {
@@ -71,7 +71,7 @@ namespace PetPalz.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ChatExists(id))
+                if (!QualificationExists(id))
                 {
                     return NotFound();
                 }
@@ -84,44 +84,44 @@ namespace PetPalz.Controllers
             return NoContent();
         }
 
-        // POST: api/Chats
+        // POST: api/Qualifications
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Chat>> PostChat(Chat chat)
+        public async Task<ActionResult<Qualification>> PostQualification(Qualification qualification)
         {
-          if (_context.Chats == null)
+          if (_context.Qualifications == null)
           {
-              return Problem("Entity set 'PetPalzContext.Chats'  is null.");
+              return Problem("Entity set 'PetPalzContext.Qualifications'  is null.");
           }
-            _context.Chats.Add(chat);
+            _context.Qualifications.Add(qualification);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetChat", new { id = chat.Id }, chat);
+            return CreatedAtAction("GetQualification", new { id = qualification.Id }, qualification);
         }
 
-        // DELETE: api/Chats/5
+        // DELETE: api/Qualifications/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteChat(int id)
+        public async Task<IActionResult> DeleteQualification(int id)
         {
-            if (_context.Chats == null)
+            if (_context.Qualifications == null)
             {
                 return NotFound();
             }
-            var chat = await _context.Chats.FindAsync(id);
-            if (chat == null)
+            var qualification = await _context.Qualifications.FindAsync(id);
+            if (qualification == null)
             {
                 return NotFound();
             }
 
-            _context.Chats.Remove(chat);
+            _context.Qualifications.Remove(qualification);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool ChatExists(int id)
+        private bool QualificationExists(int id)
         {
-            return (_context.Chats?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Qualifications?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

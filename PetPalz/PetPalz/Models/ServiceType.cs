@@ -2,5 +2,5 @@
 
 public class ServiceType:BaseEntity
 {
-    
+    public bool IsForOwner { get; set; }
 }

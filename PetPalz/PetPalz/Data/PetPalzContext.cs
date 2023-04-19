@@ -21,4 +21,5 @@ public class PetPalzContext : IdentityDbContext
     public DbSet<ServiceTypeInUser> ServiceTypeInUsers { get; set; }
     public DbSet<UserYearsOfExperience> UserYearsOfExperience { get; set;}
     public DbSet<UserFullName> UserFullNames { get; set; }
+    public DbSet<UserDescription> UserDescriptions { get; set; }
 }
