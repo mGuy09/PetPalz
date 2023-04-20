@@ -256,5 +256,24 @@ namespace PetPalz.Controllers
             Response.Cookies.Append("Token", tokenHandler.WriteToken(token), new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true });
             return Ok("User Logged In");
         }
+
+        [HttpDelete]
+        public async Task<ActionResult> DeleteAccount()
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null) return BadRequest();
+
+            _context.QualificationsInUsers.RemoveRange(_context.QualificationsInUsers.AsEnumerable().Where(x => x.UserId == user.Id));
+            _context.UserFullNames.Remove(_context.UserFullNames.AsEnumerable().First(x => x.UserId == user.Id));
+            _context.UserDescriptions.Remove(_context.UserDescriptions.AsEnumerable().First(x => x.UserId == user.Id));
+            _context.ProfilePicUsers.Remove(_context.ProfilePicUsers.AsEnumerable().First(x => x.UserId == user.Id));
+            _context.ServiceTypeInUsers.Remove(_context.ServiceTypeInUsers.AsEnumerable().First(x=> x.UserId == user.Id));
+            _context.UserYearsOfExperience.Remove(_context.UserYearsOfExperience.AsEnumerable()
+                .First(x => x.UserId == user.Id));
+            _context.UserTypesInUsers.Remove(_context.UserTypesInUsers.AsEnumerable().First(x => x.UserId == user.Id));
+            await _context.SaveChangesAsync();
+            return Ok("User Deleted");
+        }
     }
 }
