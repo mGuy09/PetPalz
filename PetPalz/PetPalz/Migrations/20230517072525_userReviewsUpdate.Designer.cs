@@ -11,9 +11,9 @@ using PetPalz.Data;
 
 namespace PetPalz.Migrations
 {
-    //[DbContext(typeof(PetPalzContext))]
-    [Migration("20230330135628_initialMigration")]
-    partial class initialMigration
+    [DbContext(typeof(PetPalzContext))]
+    [Migration("20230517072525_userReviewsUpdate")]
+    partial class userReviewsUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,6 +50,29 @@ namespace PetPalz.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "6c22127d-b027-402c-be00-b54463baff00",
+                            ConcurrencyStamp = "1",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "48109c31-eb1f-404d-912c-2f04a8807848",
+                            ConcurrencyStamp = "2",
+                            Name = "petOwner",
+                            NormalizedName = "PETOWNER"
+                        },
+                        new
+                        {
+                            Id = "e8a36bf1-9fb2-41d4-b2ad-ce50f8b0ccee",
+                            ConcurrencyStamp = "3",
+                            Name = "petSitter",
+                            NormalizedName = "PETSITTER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -255,6 +278,9 @@ namespace PetPalz.Migrations
                     b.Property<int>("ChatId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("DeliverDateTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -325,6 +351,91 @@ namespace PetPalz.Migrations
                     b.ToTable("QualificationsInUsers");
                 });
 
+            modelBuilder.Entity("PetPalz.Models.ServiceType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsForOwner")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ServiceTypes");
+                });
+
+            modelBuilder.Entity("PetPalz.Models.ServiceTypeInUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ServiceTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ServiceTypeInUsers");
+                });
+
+            modelBuilder.Entity("PetPalz.Models.UserDescription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserDescriptions");
+                });
+
+            modelBuilder.Entity("PetPalz.Models.UserFullName", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserFullNames");
+                });
+
             modelBuilder.Entity("PetPalz.Models.UserRating", b =>
                 {
                     b.Property<int>("Id")
@@ -343,6 +454,53 @@ namespace PetPalz.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserRatings");
+                });
+
+            modelBuilder.Entity("PetPalz.Models.UserReviews", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserReviews");
+                });
+
+            modelBuilder.Entity("PetPalz.Models.UserStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserStatuses");
                 });
 
             modelBuilder.Entity("PetPalz.Models.UserType", b =>
@@ -379,6 +537,26 @@ namespace PetPalz.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserTypesInUsers");
+                });
+
+            modelBuilder.Entity("PetPalz.Models.UserYearsOfExperience", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("YearsOfExperience")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserYearsOfExperience");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

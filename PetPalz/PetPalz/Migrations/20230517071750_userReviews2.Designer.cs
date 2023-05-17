@@ -12,8 +12,8 @@ using PetPalz.Data;
 namespace PetPalz.Migrations
 {
     [DbContext(typeof(PetPalzContext))]
-    [Migration("20230418084552_added_new_col_for_servicetype")]
-    partial class added_new_col_for_servicetype
+    [Migration("20230517071750_userReviews2")]
+    partial class userReviews2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,6 +50,29 @@ namespace PetPalz.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "315aa819-3c29-4b99-821e-364daef3adee",
+                            ConcurrencyStamp = "1",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "637cb3d9-a78e-4848-9f3d-2703008876b9",
+                            ConcurrencyStamp = "2",
+                            Name = "petOwner",
+                            NormalizedName = "PETOWNER"
+                        },
+                        new
+                        {
+                            Id = "04e00b17-d4cb-44da-b870-435fecd2b3c7",
+                            ConcurrencyStamp = "3",
+                            Name = "petSitter",
+                            NormalizedName = "PETSITTER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -431,6 +454,49 @@ namespace PetPalz.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserRatings");
+                });
+
+            modelBuilder.Entity("PetPalz.Models.UserReviews", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserReviews");
+                });
+
+            modelBuilder.Entity("PetPalz.Models.UserStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserStatuses");
                 });
 
             modelBuilder.Entity("PetPalz.Models.UserType", b =>

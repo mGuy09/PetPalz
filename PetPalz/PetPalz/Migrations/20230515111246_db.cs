@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace PetPalz.Migrations
 {
     /// <inheritdoc />
-    public partial class initialMigration : Migration
+    public partial class db : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -58,7 +60,8 @@ namespace PetPalz.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SenderId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ChatId = table.Column<int>(type: "int", nullable: false),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DeliverDateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -121,6 +124,63 @@ namespace PetPalz.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ServiceTypeInUsers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ServiceTypeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServiceTypeInUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ServiceTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IsForOwner = table.Column<bool>(type: "bit", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServiceTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserDescriptions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserDescriptions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserFullNames",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserFullNames", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserRatings",
                 columns: table => new
                 {
@@ -132,6 +192,20 @@ namespace PetPalz.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserRatings", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserStatuses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserStatuses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -159,6 +233,20 @@ namespace PetPalz.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserTypesInUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserYearsOfExperience",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    YearsOfExperience = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserYearsOfExperience", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -267,6 +355,16 @@ namespace PetPalz.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "b7a1b8d7-aeb6-43ce-958f-ab226226ab12", "1", "Admin", "ADMIN" },
+                    { "bc32276e-a516-4a03-95ad-bf57dc433007", "2", "petOwner", "PETOWNER" },
+                    { "ec5a3bee-3b8d-41ce-bcb7-95f796c3162d", "3", "petSitter", "PETSITTER" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -341,13 +439,31 @@ namespace PetPalz.Migrations
                 name: "QualificationsInUsers");
 
             migrationBuilder.DropTable(
+                name: "ServiceTypeInUsers");
+
+            migrationBuilder.DropTable(
+                name: "ServiceTypes");
+
+            migrationBuilder.DropTable(
+                name: "UserDescriptions");
+
+            migrationBuilder.DropTable(
+                name: "UserFullNames");
+
+            migrationBuilder.DropTable(
                 name: "UserRatings");
+
+            migrationBuilder.DropTable(
+                name: "UserStatuses");
 
             migrationBuilder.DropTable(
                 name: "UserTypes");
 
             migrationBuilder.DropTable(
                 name: "UserTypesInUsers");
+
+            migrationBuilder.DropTable(
+                name: "UserYearsOfExperience");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

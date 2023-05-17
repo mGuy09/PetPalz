@@ -12,8 +12,8 @@ using PetPalz.Data;
 namespace PetPalz.Migrations
 {
     [DbContext(typeof(PetPalzContext))]
-    [Migration("20230403083402_userdescriptiontableadded")]
-    partial class userdescriptiontableadded
+    [Migration("20230517060422_userReviews")]
+    partial class userReviews
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,6 +50,29 @@ namespace PetPalz.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "043dbcdf-6595-4034-b67d-b4be53fee0dd",
+                            ConcurrencyStamp = "1",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "05e1f61e-e090-4e9c-8c38-36cda0b1b222",
+                            ConcurrencyStamp = "2",
+                            Name = "petOwner",
+                            NormalizedName = "PETOWNER"
+                        },
+                        new
+                        {
+                            Id = "4c7c8aee-c0b9-4cb4-b4dd-73617676dc84",
+                            ConcurrencyStamp = "3",
+                            Name = "petSitter",
+                            NormalizedName = "PETSITTER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -336,6 +359,9 @@ namespace PetPalz.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("IsForOwner")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -428,6 +454,26 @@ namespace PetPalz.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserRatings");
+                });
+
+            modelBuilder.Entity("PetPalz.Models.UserStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserStatuses");
                 });
 
             modelBuilder.Entity("PetPalz.Models.UserType", b =>

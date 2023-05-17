@@ -6,4 +6,6 @@ public class UserDetailsDto
     public List<int> QualificationIds { get; set; }
     public int ServiceTypeId { get; set; }
     public string? description { get; set; }
+    public int YearsOfExperience { get; set; }
+    public string Gender { get; set; }
 }

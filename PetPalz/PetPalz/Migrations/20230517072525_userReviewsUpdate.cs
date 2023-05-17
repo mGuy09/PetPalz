@@ -2,28 +2,33 @@
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace PetPalz.Migrations
 {
     /// <inheritdoc />
-    public partial class added_new_col_for_servicetype : Migration
+    public partial class userReviewsUpdate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "IsForOwner",
-                table: "ServiceTypes",
-                type: "bit",
+
+            migrationBuilder.AddColumn<string>(
+                name: "PostUserId",
+                table: "UserReviews",
+                type: "nvarchar(max)",
                 nullable: false,
-                defaultValue: false);
+                defaultValue: "");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "IsForOwner",
-                table: "ServiceTypes");
+                name: "PostUserId",
+                table: "UserReviews");
+
+            
         }
     }
 }
