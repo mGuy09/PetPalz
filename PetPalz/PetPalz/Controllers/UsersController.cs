@@ -167,7 +167,7 @@ namespace PetPalz.Controllers
                     UserType = _context.UserTypesInUsers.AsEnumerable().Where(x => x.UserId == user.Id)
                         .Select(x => _context.UserTypes.AsEnumerable().First(y => y.Id == x.UserTypeId)).First().Name,
                     Description = _context.UserDescriptions.AsEnumerable().First(x => x.UserId == user.Id).Description,
-                }).ToList());
+                }).OrderByDescending(x => x.Rating.Rating).ToList());
         }
 
 
@@ -197,7 +197,7 @@ namespace PetPalz.Controllers
                     UserType = _context.UserTypesInUsers.AsEnumerable().Where(x => x.UserId == user.Id)
                         .Select(x => _context.UserTypes.AsEnumerable().First(y => y.Id == x.UserTypeId)).First().Name,
                     Description = _context.UserDescriptions.AsEnumerable().First(x => x.UserId == user.Id).Description,
-                }).ToList());
+                }).OrderByDescending(x => x.Rating.Rating).ToList());
         }
 
         [HttpPost("AddNewUser")]
