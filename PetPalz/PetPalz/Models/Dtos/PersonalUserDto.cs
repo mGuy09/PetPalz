@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-
+﻿
 namespace PetPalz.Models.Dtos;
 
 public class PersonalUserDto:UserDto

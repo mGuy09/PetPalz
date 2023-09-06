@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PetPalz.Data;
 using PetPalz.Models;
 
@@ -24,13 +23,35 @@ public class StatusController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public ActionResult GetStatus( string id )
+    public async Task<ActionResult> GetStatus( string id )
     {
         UserStatus? status = _context.UserStatuses.AsEnumerable().FirstOrDefault(x => x.UserId == id);
         if (status == null)
             return BadRequest();
         return Ok(status);
     }
+    [HttpPost]
+    public async Task<ActionResult> SetStatus(string statusMessage)
+    {
+        if (statusMessage == null) 
+            return BadRequest();
+        var user = await _userManager.FindByNameAsync(User.Identity.Name);
+        var status = _context.UserStatuses.FirstOrDefault(x => x.UserId == user.Id);
+        if (status != null)
+            return BadRequest();
+        await _context.UserStatuses.AddAsync(new UserStatus()
+        {
+            Name = statusMessage,
+            UserId = user.Id
+        });
+        await _context.SaveChangesAsync();
+        return Created("https://localhost:7105/api/Status", new UserStatus()
+        {
+            Name = statusMessage,
+            UserId = user.Id
+        });
+    }
+
 
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateStatus(string id, string statusMessage)

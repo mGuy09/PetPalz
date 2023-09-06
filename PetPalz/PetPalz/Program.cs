@@ -16,6 +16,7 @@ services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 services.AddEndpointsApiExplorer();
+services.AddSignalR();
 services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "PetPalz Api", Version = "v1" });
@@ -81,6 +82,7 @@ services.AddAuthentication(auth =>
     {
         OnMessageReceived = context =>
         {
+            
             context.Token = context.Request.Cookies["Token"];
             return Task.CompletedTask;
         }

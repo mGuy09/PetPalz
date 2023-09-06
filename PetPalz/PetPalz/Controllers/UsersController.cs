@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
@@ -96,10 +95,57 @@ namespace PetPalz.Controllers
             });
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult> GetUser( string id )
+        [HttpGet("GetByName/{userName}")]
+        public async Task<ActionResult> GetUser( string userName )
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByNameAsync(userName);
+            if (user == null)
+                return BadRequest(new { Message = "User does not exist" });
+            var roles = await _userManager.GetRolesAsync(user);
+            if (roles.Contains("petOwner"))
+            {
+                return Ok(new UserDto
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    FirstName = _context.UserFullNames.AsEnumerable().First(x => x.UserId == user.Id).FirstName,
+                    LastName = _context.UserFullNames.AsEnumerable().First(x => x.UserId == user.Id).LastName,
+                    Qualifications = null,
+                    YearsOfExperience = 0,
+                    PhoneNumber = user.PhoneNumber,
+                    ProfilePicUrl = _context.ProfilePicUsers.AsEnumerable().First(x => x.UserId == user.Id).ImageUrl,
+                    Rating = _context.UserRatings.AsEnumerable().First(x => x.UserId == user.Id),
+                    ServiceType = _context.ServiceTypeInUsers.AsEnumerable().Where(x => x.UserId == user.Id)
+                        .Select(x => _context.ServiceTypes.AsEnumerable().First(y => y.Id == x.ServiceTypeId)).First(),
+                    UserType = _context.UserTypesInUsers.AsEnumerable().Where(x => x.UserId == user.Id)
+                        .Select(x => _context.UserTypes.AsEnumerable().First(y => y.Id == x.UserTypeId)).First().Name,
+                    Description = _context.UserDescriptions.AsEnumerable().First(x => x.UserId == user.Id).Description,
+                });
+            }
+            return Ok(new UserDto
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                FirstName = _context.UserFullNames.AsEnumerable().First(x => x.UserId == user.Id).FirstName,
+                LastName = _context.UserFullNames.AsEnumerable().First(x => x.UserId == user.Id).LastName,
+                Qualifications = _context.QualificationsInUsers.AsEnumerable().Where(x => x.UserId == user.Id)
+                    .Select(x => _context.Qualifications.First(y => y.Id == x.QualificationId)).ToList(),
+                YearsOfExperience = _context.UserYearsOfExperience.AsEnumerable().First(x => x.UserId == user.Id).YearsOfExperience,
+                PhoneNumber = user.PhoneNumber,
+                ProfilePicUrl = _context.ProfilePicUsers.AsEnumerable().First(x => x.UserId == user.Id).ImageUrl,
+                Rating = _context.UserRatings.AsEnumerable().First(x => x.UserId == user.Id),
+                ServiceType = _context.ServiceTypeInUsers.AsEnumerable().Where(x => x.UserId == user.Id)
+                    .Select(x => _context.ServiceTypes.AsEnumerable().First(y => y.Id == x.ServiceTypeId)).First(),
+                UserType = _context.UserTypesInUsers.AsEnumerable().Where(x => x.UserId == user.Id)
+                    .Select(x => _context.UserTypes.AsEnumerable().First(y => y.Id == x.UserTypeId)).First().Name,
+                Description = _context.UserDescriptions.AsEnumerable().First(x => x.UserId == user.Id).Description,
+            });
+        }
+
+        [HttpGet("GetById/{userId}")]
+        public async Task<ActionResult> GetUserById(string userId)
+        {
+            var user = await _userManager.FindByNameAsync(userId);
             if (user == null)
                 return BadRequest(new { Message = "User does not exist" });
             var roles = await _userManager.GetRolesAsync(user);
@@ -311,6 +357,12 @@ namespace PetPalz.Controllers
                 ImageUrl = userDetails.Gender == "male"
                     ? "https://i.ibb.co/0JGWD44/user-male.png"
                     : "https://i.ibb.co/Jkb7FzG/user-female.png",
+                UserId = user.Id
+            });
+            
+            _context.UserStatuses.Add(new UserStatus()
+            {
+                Name = "",
                 UserId = user.Id
             });
 

@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PetPalz.Models;
-using PetPalz.Models.Dtos;
 
 namespace PetPalz.Data;
 
@@ -26,17 +24,17 @@ public class PetPalzContext : IdentityDbContext
     public DbSet<UserStatus> UserStatuses { get; set; }
     public DbSet<UserReviews> UserReviews { get; set; }
 
-    protected override void OnModelCreating( ModelBuilder builder )
-    {
-        base.OnModelCreating(builder);
-        SeedRoles(builder);
-    }
-    private static void SeedRoles( ModelBuilder builder )
-    {
-        builder.Entity<IdentityRole>().HasData(
-            new IdentityRole() { Name = "Admin", ConcurrencyStamp = "1", NormalizedName = "ADMIN" },
-            new IdentityRole() { Name = "petOwner", ConcurrencyStamp = "2", NormalizedName = "PETOWNER" },
-            new IdentityRole() { Name = "petSitter", ConcurrencyStamp = "3", NormalizedName = "PETSITTER" }
-        );
-    }
+    //protected override void OnModelCreating( ModelBuilder builder )
+    //{
+    //    base.OnModelCreating(builder);
+    //    SeedRoles(builder);
+    //}
+    //private static void SeedRoles( ModelBuilder builder )
+    //{
+    //    builder.Entity<IdentityRole>().HasData(
+    //        new IdentityRole() { Name = "Admin", ConcurrencyStamp = "1", NormalizedName = "ADMIN" },
+    //        new IdentityRole() { Name = "petOwner", ConcurrencyStamp = "2", NormalizedName = "PETOWNER" },
+    //        new IdentityRole() { Name = "petSitter", ConcurrencyStamp = "3", NormalizedName = "PETSITTER" }
+    //    );
+    //}
 }

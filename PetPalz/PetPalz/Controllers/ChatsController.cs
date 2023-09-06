@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PetPalz.Data;
 using PetPalz.Models;
-using PetPalz.Models.Dtos;
 
 namespace PetPalz.Controllers
 {
@@ -39,17 +31,29 @@ namespace PetPalz.Controllers
             {
                 return BadRequest();
             }
-            return Ok(_context.Chats.Where(x => x.UserId1 == user.Id).Select(x => new ChatDto
+            var chats = _context.Chats.Where(x => x.UserId1 == user.Id).Select(x => new Chat
             {
                 Id = x.Id,
-                 UserId1 = x.UserId1,
-                 UserId2 = x.UserId2,
-                 Messages = _context.ChatMessages.Where(y => y.ChatId == x.Id).OrderByDescending(y => y.DeliverDateTime).ToList()
-            }));
+                UserId1 = x.UserId1,
+                UserId2 = x.UserId2,
+            }).ToList();
+            return Ok(chats);
+        }
+
+        [HttpGet("{userId}")]
+        public async Task<ActionResult> GetChatbyChat (string userId)
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var chat = _context.Chats.Where(x => x.UserId1 == user.Id && x.UserId2 == userId);
+            if(chat is null)
+            {
+                return BadRequest();
+            }
+            return Ok(chat);
         }
 
         [HttpPost]
-        public async Task<ActionResult> UserChats(ChatDto chat)
+        public async Task<ActionResult> UserChats(Chat chat)
         {
             if (chat == null)
             {
@@ -62,7 +66,9 @@ namespace PetPalz.Controllers
                 UserId2 = chat.UserId2
             });
             await _context.SaveChangesAsync();
-            return Ok();
+
+            var chatId = _context.Chats.FirstOrDefault(x => x.UserId1 == chat.UserId1 && x.UserId2 == chat.UserId2).Id;
+            return Ok(chatId);
         }
 
     }
