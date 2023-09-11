@@ -145,7 +145,7 @@ namespace PetPalz.Controllers
         [HttpGet("GetById/{userId}")]
         public async Task<ActionResult> GetUserById(string userId)
         {
-            var user = await _userManager.FindByNameAsync(userId);
+            var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 return BadRequest(new { Message = "User does not exist" });
             var roles = await _userManager.GetRolesAsync(user);
