@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PetPalz.Data;
+using PetPalz.SignalRHubs;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +17,6 @@ services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 services.AddEndpointsApiExplorer();
-services.AddSignalR();
 services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "PetPalz Api", Version = "v1" });
@@ -60,6 +60,8 @@ services.AddIdentity<IdentityUser, IdentityRole>(options =>
         options.Password.RequiredLength = 6;
     }).AddRoles<IdentityRole>().AddEntityFrameworkStores<PetPalzContext>()
     .AddDefaultTokenProviders();
+
+services.AddSignalR();
 
 services.AddAuthentication(auth =>
 {
@@ -117,5 +119,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<ChatHub>("/hubs/chat");
 
 app.Run();

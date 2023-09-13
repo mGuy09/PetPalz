@@ -67,8 +67,8 @@ namespace PetPalz.Controllers
             });
             await _context.SaveChangesAsync();
 
-            var chatId = _context.Chats.FirstOrDefault(x => x.UserId1 == chat.UserId1 && x.UserId2 == chat.UserId2).Id;
-            return Ok(chatId);
+            var userId2 = _context.Chats.FirstOrDefault(x => x.UserId1 == chat.UserId1 && x.UserId2 == chat.UserId2).UserId2;
+            return Ok(userId2);
         }
 
     }
