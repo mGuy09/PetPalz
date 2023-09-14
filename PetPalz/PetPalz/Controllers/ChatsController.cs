@@ -31,7 +31,7 @@ namespace PetPalz.Controllers
             {
                 return BadRequest();
             }
-            var chats = _context.Chats.Where(x => x.UserId1 == user.Id).Select(x => new Chat
+            var chats = _context.Chats.Where(x => x.UserId1 == user.Id || x.UserId2 == user.Id).Select(x => new Chat
             {
                 Id = x.Id,
                 UserId1 = x.UserId1,
